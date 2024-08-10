@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="left-panel">
+      <h2>Active Rooms</h2>
+      <div *ngIf="getRoomKeys().length > 0; else noRooms" class="rooms-container">
+        <div *ngFor="let roomId of getRoomKeys()" class="room-card">
+          <div class="room-header">
+            <h3><b>Room Id:</b> {{ roomId }}</h3>
+          </div>
+          <div class="room-body">
+            <span class="status active"></span>
+            <p>{{ rooms[roomId].length }} player joined</p>
+          </div>
+          <div>
+            <a [href]="fullUrl + '/room/' + roomId">Join room</a>
+          </div>          
+        </div>        
+      </div>
+      <ng-template #noRooms>
+        <p>No active rooms available</p>
+      </ng-template>
+    </div>
+    <div class="right-panel">
+      <button (click)="createRoom()" class="create-room-btn">Create Room</button>
+    </div>
+  </div>
+  
+
+  

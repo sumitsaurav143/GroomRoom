@@ -1,0 +1,75 @@
+<div class="room-container">
+
+  <div *ngIf="!openRoomForUser">
+    <input [(ngModel)]="username" placeholder="Provide your name" class="styled-input" />
+    <button (click)="openRoom()" class="styled-button" [disabled]="usernameProvided()">Enter Room</button>
+  </div>
+
+  <div *ngIf="openRoomForUser">
+    <h2 class="username_greet">Hi, {{username}}</h2>
+    <mat-toolbar color="primary" class="top-panel">
+      <span>Room ID: {{ roomId }}</span>
+    </mat-toolbar>
+    <div class="left-panel">
+      <mat-form-field appearance="fill">
+        <mat-label>Select Story ID</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let id of storyIds" [value]="id">{{ id }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="active-url">
+        <p><b>Share Room Url:</b>
+          <button mat-icon-button (click)="copyToClipboard(fullUrl)" matTooltip="Copy URL">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+        </p>
+      </div>
+    </div>
+    <div class="middle-panel">
+      <div class="table">
+        <mat-card class="player-card" *ngFor="let option of options">
+          <mat-card-content
+            (click)="submitResponse(option)"
+            [ngClass]="{'selected': option === userResponse, 'disabled': userResponse !== null && option !== userResponse}">
+            <h3>{{ option }}</h3>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      
+    </div>
+    <div class="right-panel">
+      <!-- <mat-card>
+        <mat-card-content>
+          <h2>Timer: {{ timer }}s</h2>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="accent" (click)="resetTimer()">Reset Timer</button>
+        </mat-card-actions>
+      </mat-card> -->
+
+      <mat-card>
+        <mat-card-content>
+          <div class="room-players">
+            <h2>Active Players</h2>
+            <p>{{roomPlayers.length}} player joined</p>
+            <ul class="active-players">
+              <li *ngFor="let player of roomPlayers" class="player">
+                <span class="status active"></span>
+                <ng-container *ngIf="player.name === username; else otherPlayer">
+                  <b>{{ player.name | uppercase }} (You) {{player.response==null?'🙊':'🐵✔'}}</b>
+                </ng-container>
+                <ng-template #otherPlayer>
+                  {{ player.name | uppercase }} {{player.response==null?'🙊':'🐵✔'}}
+                </ng-template>
+              </li>
+              
+            </ul>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    
+  </div>
+
+</div>
